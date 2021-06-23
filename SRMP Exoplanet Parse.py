@@ -19,7 +19,7 @@ def main ():
  pnamestd = open("Planets and Square Root of Standard Deviations.txt", mode='w+', encoding='utf-8')
  pnamestd.write('Planet;Sqrt(Std Dev) in minutes;Number of Data Points\n')
 
- for i in range (287, 365):
+ for i in range (358, 365):
   csexo = specexo[i] #planet link
   pname = specexo[i] #planet name
   pname = pname.replace('/','~')
@@ -88,10 +88,10 @@ def main ():
     Epvalues.append(float(Epval))
    OCval = pline[OCstart+1:OCend]
    if len(OCval) != 0 and OCval != 'O-C':
-    OCvalues.append(float(OCval))
+    OCvalues.append(float(OCval)*1440)
 
-  print('The mean of O-C values for ', pname, ' is ', round(findmean(OCvalues)*1440, 1))
-  print('The standard deviation of O-C values for ', pname, ' is ', findstd(OCvalues), '\n')  
+  print('The mean of O-C values for ', pname, ' is ', round(findmean(OCvalues),1))
+  print('The standard deviation of O-C values for ', pname, ' is ', round(findstd(OCvalues),1), '\n')  
 
   pandstd = pname
   if len(OCvalues) < 5:
@@ -103,12 +103,13 @@ def main ():
 
   #plt.ion()
   plt.scatter(Epvalues, OCvalues, c='blue')
-  plt.title('O-C (d) vs Epoch')
+  
+  plt.title('O-C (min) vs Epoch for ' + pname)
   plt.xlabel('Epoch')
-  plt.ylabel('O-C (d)')
+  plt.ylabel('O-C (min)')
   #plt.errorbar(Epvalues, OCvalues, yerr = 0.000001, fmt='o')
-  #plt.show()
-  #plt.close('O-C (d) vs Epoch')
+  plt.show()
+  plt.close('O-C (min) vs Epoch')
   plt.savefig(pname+'.png')
 
  time.sleep(2) 
@@ -136,7 +137,6 @@ def findstd (OCvalues):
   OCstd = math.sqrt(OCsqrdmmmean)
  else:
   OCstd = math.sqrt(OCsqrdmmmean/len(OCvalues)) #standard deviation of O-C values
- OCstd = round(OCstd*1440, 1)
  return OCstd
 
 main()
